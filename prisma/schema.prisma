@@ -85,19 +85,17 @@ model Brand {
 }
 
 model Glasses {
-    id          String     @id @default(cuid())
+    id          String      @id @default(cuid())
     name        String
     price       Float
     polarized   Boolean
-    gender      Gender     @default(Unissex)
-    faceTypes   FaceType[]
-    description String?    @db.Text
+    gender      Gender      @default(Unissex)
+    faceShapes  FaceShape[]
+    description String?     @db.Text
 }
 
-model FaceType {
-    id        String   @id @default(cuid())
-    name      String
-    shape     Shape    @default(All)
-    Glasses   Glasses? @relation(fields: [glassesId], references: [id])
-    glassesId String?
+model FaceShape {
+    id      String    @id @default(cuid())
+    shape   Shape     @default(All)
+    Glasses Glasses[]
 }
