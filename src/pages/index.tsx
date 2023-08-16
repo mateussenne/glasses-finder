@@ -1,8 +1,15 @@
-import { Button, FileButton, Group, Text, TextInput } from "@mantine/core";
+import {
+  Button,
+  FileButton,
+  type FileButtonProps,
+  Group,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
@@ -13,8 +20,14 @@ export default function Home() {
     },
   });
 
+  const photoUploadForm = useRef<HTMLFormElement | null>(null);
+  const handleSubmit = () => {
+    photoUploadForm.current?.submit();
+  };
+
   useEffect(() => {
     setFile(form.values.file);
+    // fetch("/api/uploads/file-upload", {});
   }, [form.values.file]);
 
   return (
@@ -30,23 +43,28 @@ export default function Home() {
             Send your photo
           </h1>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
-              <>
+            <>
+              <form
+                action={"/api/uploads/file-upload"}
+                name="PhotoUpload"
+                ref={photoUploadForm}
+              >
                 <Group position="center">
                   <FileButton
                     accept="image/png,image/jpeg"
-                    {...form.getInputProps("file")}
+                    onChange={handleSubmit}
                   >
                     {(props) => <Button {...props}>Upload image</Button>}
                   </FileButton>
                 </Group>
-
                 {file && (
                   <Text size="sm" align="center" mt="sm">
                     Picked file: {file.name}
                   </Text>
                 )}
-              </>
+              </form>
+            </>
+            <form onSubmit={form.onSubmit((values) => console.log(values))}>
               <Button type="submit">Send!</Button>
             </form>
           </div>
