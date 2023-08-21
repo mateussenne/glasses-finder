@@ -2,7 +2,7 @@ import { Button, FileButton, Group } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
@@ -12,13 +12,14 @@ export default function Home() {
     },
   });
 
+  const photoUploadForm = useRef<HTMLFormElement>(null);
+
   useMemo(() => {
     setFile(form.values.file);
     async function uploadFile() {
       if (file) {
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("fileName", file.name);
         await fetch("/api/uploads/file-upload", {
           method: "POST",
           body: formData,
@@ -44,7 +45,7 @@ export default function Home() {
           </h1>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
             <>
-              <form action={"/api/uploads/file-upload"}>
+              <form action={"/api/uploads/file-upload"} ref={photoUploadForm}>
                 <Group position="center">
                   <FileButton
                     accept="image/png,image/jpeg"
@@ -53,6 +54,12 @@ export default function Home() {
                     {(props) => <Button {...props}>Upload image</Button>}
                   </FileButton>
                 </Group>
+                {/* <input
+                  type="file"
+                  name="file"
+                  onChange={handleSumbit}
+                  size={1000}
+                /> */}
               </form>
             </>
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
