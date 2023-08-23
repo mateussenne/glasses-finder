@@ -9,7 +9,7 @@ import {
 import { useForm } from "@mantine/form";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
@@ -33,10 +33,65 @@ export default function Home() {
         });
       }
     }
-
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     uploadFile();
   }, [form.values.file, file]);
+
+  const [webCamStatus, setWebCamStatus] = useState(false);
+  const [cameraPhoto, setCameraPhoto] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const photoRef = useRef<HTMLCanvasElement | null>(null);
+
+  const activateWebcam = () => {
+    setWebCamStatus(true);
+  };
+
+  const getVideo = () => {
+    if (webCamStatus) {
+      navigator.mediaDevices
+        .getUserMedia({
+          video: { width: 800, height: 600 },
+        })
+        .then((stream) => {
+          const video = videoRef.current;
+          if (!video) {
+            return console.log("no video signal");
+          }
+          video.srcObject = stream;
+          video
+            .play()
+            .then((playing) => {
+              console.log(playing);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        })
+        .catch((e) => {
+          console.log("error", e);
+        });
+    }
+  };
+
+  const takePhoto = () => {
+    const video = videoRef.current;
+    const photo = photoRef.current;
+    const width = 800;
+    const heght = 600;
+
+    console.log(video);
+
+    if (video) {
+      const ctx = photo?.getContext("2d");
+      ctx?.drawImage(video, 0, 0, width, heght);
+      setCameraPhoto(true);
+    }
+  };
+
+  useEffect(() => {
+    getVideo();
+  }),
+    [videoRef];
 
   return (
     <>
@@ -48,35 +103,56 @@ export default function Home() {
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#1c2046] to-[#18140b]">
         <Container>
           <Grid grow>
-            <Grid.Col span={12}>
-              <Center>
-                <Title className="font-sans text-7xl text-white">
-                  Send your photo
-                </Title>
-              </Center>
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <form action={"/api/uploads/file-upload"} ref={photoUploadForm}>
-                <FileButton
-                  accept="image/png,image/jpeg"
-                  {...form.getInputProps("file")}
-                >
-                  {(props) => (
-                    <Button
-                      className="float-right rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-amber-950"
-                      {...props}
+            {webCamStatus ? (
+              <Grid.Col span={12}>
+                {cameraPhoto ? (
+                  <canvas ref={photoRef}></canvas>
+                ) : (
+                  <video ref={videoRef}></video>
+                )}
+                <Button onClick={takePhoto}>Take photo!</Button>
+              </Grid.Col>
+            ) : (
+              <>
+                <Grid.Col span={12}>
+                  <Center>
+                    <Title className="font-sans text-7xl text-white">
+                      Send your photo
+                    </Title>
+                  </Center>
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <form
+                    action={"/api/uploads/file-upload"}
+                    ref={photoUploadForm}
+                  >
+                    <FileButton
+                      accept="image/png,image/jpeg"
+                      {...form.getInputProps("file")}
                     >
-                      Upload image
-                    </Button>
-                  )}
-                </FileButton>
-              </form>
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <Button className="float-left rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-amber-950">
-                Take a photo
-              </Button>
-            </Grid.Col>
+                      {(props) => (
+                        <Button
+                          className="float-right rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-amber-950"
+                          {...props}
+                        >
+                          Upload image
+                        </Button>
+                      )}
+                    </FileButton>
+                  </form>
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <Button
+                    className="float-left rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-amber-950"
+                    onClick={activateWebcam}
+                  >
+                    Use camera
+                  </Button>
+                </Grid.Col>
+              </>
+            )}
+          </Grid>
+          <Grid>
             <Grid.Col span={12}>
               <form onSubmit={form.onSubmit((values) => console.log(values))}>
                 <Center>
