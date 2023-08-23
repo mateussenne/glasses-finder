@@ -7,7 +7,6 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useEffect, useMemo, useRef, useState } from "react";
 
