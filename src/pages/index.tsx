@@ -36,6 +36,8 @@ export default function Home() {
     uploadFile();
   }, [form.values.file, file]);
 
+  const width = 800;
+  const height = 600;
   const [webCamStatus, setWebCamStatus] = useState(false);
   const [cameraPhoto, setCameraPhoto] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -75,15 +77,17 @@ export default function Home() {
   const takePhoto = () => {
     const video = videoRef.current;
     const photo = photoRef.current;
-    const width = 800;
-    const heght = 600;
-
-    console.log(video);
 
     if (video) {
       const ctx = photo?.getContext("2d");
-      ctx?.drawImage(video, 0, 0, width, heght);
+      ctx?.drawImage(video, 0, 0, width, height);
       setCameraPhoto(true);
+      photo?.toBlob((blob) => {
+        if (blob) {
+          const file = new File([blob], "photosnap.jpg");
+          setFile(file);
+        }
+      });
     }
   };
 
@@ -104,11 +108,16 @@ export default function Home() {
           <Grid grow>
             {webCamStatus ? (
               <Grid.Col span={12}>
-                {cameraPhoto ? (
-                  <canvas ref={photoRef}></canvas>
-                ) : (
-                  <video ref={videoRef}></video>
-                )}
+                <canvas
+                  className={!cameraPhoto ? "hidden" : ""}
+                  width={width}
+                  height={height}
+                  ref={photoRef}
+                ></canvas>
+                <video
+                  className={cameraPhoto ? "hidden" : ""}
+                  ref={videoRef}
+                ></video>
                 <Button onClick={takePhoto}>Take photo!</Button>
               </Grid.Col>
             ) : (
