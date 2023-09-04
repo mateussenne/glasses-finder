@@ -9,32 +9,64 @@ import {
 import { useForm } from "@mantine/form";
 import Head from "next/head";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { faceShapeConverter } from "~/utils/faceshape-converter";
 
+type FaceShapeResponse = {
+  shape: string;
+  precision: number;
+};
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
+  const [faceShapeResponse, setFaceShapeResponse] = useState<FaceShapeResponse>(
+    {
+      precision: 0,
+      shape: "",
+    }
+  );
   const form = useForm({
     initialValues: {
       file: null,
+      faceShapeResponse: {
+        shape: "",
+        precision: 0,
+      },
     },
   });
 
   const photoUploadForm = useRef<HTMLFormElement>(null);
 
   useMemo(() => {
-    setFile(form.values.file);
+    // setFile(form.values.file);
     async function uploadFile() {
       if (file) {
         const formData = new FormData();
         formData.append("file", file);
-        await fetch("/api/uploads/file-upload", {
+        // await fetch("/api/uploads/file-upload", {
+        const response = await fetch("http://127.0.0.1:8000", {
           method: "POST",
           body: formData,
         });
+        if (response) {
+          const parsedReponse = response.json();
+          const shape = parsedReponse.class;
+          const { precision } = parsedReponse;
+          if (precision && shape) {
+            setFaceShapeResponse({
+              precision,
+              shape,
+            });
+          }
+          form.values = {
+            ...form.values,
+            faceShapeResponse,
+          };
+          console.log(form.values);
+        }
       }
     }
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    //  eslint-disable-next-line @typescript-eslint/no-floating-promises
     uploadFile();
-  }, [form.values.file, file]);
+  }, [form, file, faceShapeResponse]);
 
   const width = 800;
   const height = 600;

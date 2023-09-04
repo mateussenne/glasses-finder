@@ -76,6 +76,7 @@ enum Shape {
     Circular
     Heart
     Diamond
+    Oval
     All
 }
 
@@ -98,4 +99,12 @@ model FaceShape {
     id      String    @id @default(cuid())
     shape   Shape     @default(All)
     Glasses Glasses[]
+    Request Request[]
+}
+
+model Request {
+    id        String    @id @default(cuid())
+    faceShape FaceShape @relation(fields: [faceShapeId], references: [id])
+
+    faceShapeId String
 }
