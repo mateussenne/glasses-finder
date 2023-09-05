@@ -10,27 +10,30 @@ import { useForm } from "@mantine/form";
 import Head from "next/head";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getFaceShape } from "~/utils/get-faceshape";
+import { UseCreateRequest } from "./api/hooks/use-create-request";
+import { type Shape } from "@prisma/client";
 
 type FaceShapeData = {
-  shape: string;
+  shape: Shape;
   precision: number;
 };
 
 interface FileForm {
-  file: File | null;
+  file?: string;
   faceShapeData: FaceShapeData;
 }
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
-  const [faceShapeResponse, setFaceShapeResponse] = useState<FaceShapeData>();
+  const [faceShapeData, setFaceShapeData] = useState<FaceShapeData>({
+    shape: "Square",
+    precision: 0,
+  });
+  const { mutate: saveRequest } = UseCreateRequest();
   const form = useForm<FileForm>({
     initialValues: {
-      file: null,
-      faceShapeData: {
-        shape: "",
-        precision: 0,
-      },
+      file: undefined,
+      faceShapeData,
     },
   });
 
@@ -41,7 +44,7 @@ export default function Home() {
         formData.append("file", file);
         // await fetch("/api/uploads/file-upload", {
         const response = await getFaceShape(formData);
-        setFaceShapeResponse(response);
+        setFaceShapeData(response);
       }
     }
     //  eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -51,9 +54,9 @@ export default function Home() {
   const transformedValues = useMemo(() => {
     return {
       ...form.values,
-      faceShapeData: faceShapeResponse,
+      faceShapeData,
     };
-  }, [faceShapeResponse, form]);
+  }, [faceShapeData, form]);
 
   const width = 800;
   const height = 600;
@@ -179,11 +182,7 @@ export default function Home() {
           <Grid>
             <Grid.Col span={12}>
               <form
-                onSubmit={form.onSubmit(
-                  (values) =>
-                    console.log("hello thos should work", transformedValues)
-                  // call procedure, get faceshape response, save
-                )}
+                onSubmit={form.onSubmit(() => saveRequest(transformedValues))}
               >
                 <Center>
                   <Button

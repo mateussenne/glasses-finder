@@ -4,8 +4,8 @@ import { prisma } from "~/server/db";
 import { Shape } from "@prisma/client";
 
 const input = z.object({
-  file: z.string(),
-  faceShapeResponse: z.object({
+  file: z.string().optional(),
+  faceShapeData: z.object({
     shape: z.nativeEnum(Shape),
     precision: z.number(),
   }),
@@ -13,23 +13,10 @@ const input = z.object({
 
 export const requestRouter = createTRPCRouter({
   create: publicProcedure.input(input).mutation(async ({ input }) => {
-    return await prisma.$transaction(async (tx) => {
-      const faceShape = await tx.faceShape.findFirstOrThrow({
-        where: {
-          shape: {
-            equals: Shape.Square,
-          },
-        },
-      });
-      await tx.request.create({
-        data: {
-          faceShape: {
-            connect: {
-              id: faceShape.id,
-            },
-          },
-        },
-      });
+    return await prisma.request.create({
+      data: {
+        shape: input.faceShapeData.shape,
+      },
     });
   }),
 });

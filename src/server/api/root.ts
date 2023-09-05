@@ -1,5 +1,6 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { faceShapeRouter } from "./routers/face-shape";
+import { requestRouter } from "./routers/request";
 
 /**
  * This is the primary router for your server.
@@ -8,6 +9,7 @@ import { faceShapeRouter } from "./routers/face-shape";
  */
 export const appRouter = createTRPCRouter({
   faceShape: faceShapeRouter,
+  request: requestRouter,
 });
 
 // export type definition of API

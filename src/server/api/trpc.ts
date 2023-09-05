@@ -7,6 +7,7 @@
  * need to use are documented accordingly near the end.
  */
 
+import { type inferReactQueryProcedureOptions } from "@trpc/react-query";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type Session } from "next-auth";
@@ -14,6 +15,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { getServerAuthSession } from "~/server/auth";
 import { prisma } from "~/server/db";
+import { type AppRouter } from "./root";
 
 /**
  * 1. CONTEXT
@@ -128,3 +130,4 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+export type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>;

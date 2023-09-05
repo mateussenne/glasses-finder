@@ -32,7 +32,7 @@ export const getFaceShape = async (formData: FormData) => {
     });
   }
 
-  const result: { shape: string; precision: number } = {
+  const result: { shape: Shape; precision: number } = {
     shape,
     precision: parsedResponse.precision,
   };
