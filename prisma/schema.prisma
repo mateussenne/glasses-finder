@@ -77,34 +77,36 @@ enum Shape {
     Heart
     Diamond
     Oval
-    All
+    Oblong
 }
 
 model Brand {
-    id   String @id @default(cuid())
-    name String
+    id      String    @id @default(cuid())
+    name    String
+    glasses Glasses[]
 }
 
 model Glasses {
     id          String      @id @default(cuid())
     name        String
     price       Float
-    polarized   Boolean
+    polarized   Boolean     @default(false)
     gender      Gender      @default(Unissex)
     faceShapes  FaceShape[]
     description String?     @db.Text
+    Brand       Brand       @relation(fields: [brandId], references: [id])
+    brandId     String
 }
 
 model FaceShape {
     id      String    @id @default(cuid())
-    shape   Shape     @default(All)
+    shape   Shape
     Glasses Glasses[]
-    Request Request[]
 }
 
 model Request {
     id        String    @id @default(cuid())
-    faceShape FaceShape @relation(fields: [faceShapeId], references: [id])
-
-    faceShapeId String
+    shape     Shape
+    createdAt DateTime  @default(now())
+    updatedAt DateTime? @updatedAt
 }

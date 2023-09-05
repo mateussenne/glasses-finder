@@ -9,64 +9,51 @@ import {
 import { useForm } from "@mantine/form";
 import Head from "next/head";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { faceShapeConverter } from "~/utils/faceshape-converter";
+import { getFaceShape } from "~/utils/get-faceshape";
 
-type FaceShapeResponse = {
+type FaceShapeData = {
   shape: string;
   precision: number;
 };
+
+interface FileForm {
+  file: File | null;
+  faceShapeData: FaceShapeData;
+}
+
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
-  const [faceShapeResponse, setFaceShapeResponse] = useState<FaceShapeResponse>(
-    {
-      precision: 0,
-      shape: "",
-    }
-  );
-  const form = useForm({
+  const [faceShapeResponse, setFaceShapeResponse] = useState<FaceShapeData>();
+  const form = useForm<FileForm>({
     initialValues: {
       file: null,
-      faceShapeResponse: {
+      faceShapeData: {
         shape: "",
         precision: 0,
       },
     },
   });
 
-  const photoUploadForm = useRef<HTMLFormElement>(null);
-
   useMemo(() => {
-    // setFile(form.values.file);
-    async function uploadFile() {
+    async function loadFile() {
       if (file) {
         const formData = new FormData();
         formData.append("file", file);
         // await fetch("/api/uploads/file-upload", {
-        const response = await fetch("http://127.0.0.1:8000", {
-          method: "POST",
-          body: formData,
-        });
-        if (response) {
-          const parsedReponse = response.json();
-          const shape = parsedReponse.class;
-          const { precision } = parsedReponse;
-          if (precision && shape) {
-            setFaceShapeResponse({
-              precision,
-              shape,
-            });
-          }
-          form.values = {
-            ...form.values,
-            faceShapeResponse,
-          };
-          console.log(form.values);
-        }
+        const response = await getFaceShape(formData);
+        setFaceShapeResponse(response);
       }
     }
     //  eslint-disable-next-line @typescript-eslint/no-floating-promises
-    uploadFile();
-  }, [form, file, faceShapeResponse]);
+    loadFile();
+  }, [file]);
+
+  const transformedValues = useMemo(() => {
+    return {
+      ...form.values,
+      faceShapeData: faceShapeResponse,
+    };
+  }, [faceShapeResponse, form]);
 
   const width = 800;
   const height = 600;
@@ -162,10 +149,7 @@ export default function Home() {
                   </Center>
                 </Grid.Col>
                 <Grid.Col span={6}>
-                  <form
-                    action={"/api/uploads/file-upload"}
-                    ref={photoUploadForm}
-                  >
+                  <form>
                     <FileButton
                       accept="image/png,image/jpeg"
                       {...form.getInputProps("file")}
@@ -194,7 +178,13 @@ export default function Home() {
           </Grid>
           <Grid>
             <Grid.Col span={12}>
-              <form onSubmit={form.onSubmit((values) => console.log(values))}>
+              <form
+                onSubmit={form.onSubmit(
+                  (values) =>
+                    console.log("hello thos should work", transformedValues)
+                  // call procedure, get faceshape response, save
+                )}
+              >
                 <Center>
                   <Button
                     className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-amber-950"
