@@ -23,7 +23,11 @@ export const FileUploadSection = () => {
     shape: "Square",
     precision: 0,
   });
-  const { mutate: saveRequest, data: generatedRequest } = UseRequestCreate();
+  const {
+    mutate: saveRequest,
+    data: generatedRequest,
+    isLoading,
+  } = UseRequestCreate();
   const form = useForm<FileForm>({
     initialValues: {
       file: null,
@@ -140,8 +144,11 @@ export const FileUploadSection = () => {
           <>
             <Grid.Col span={12}>
               <Center>
-                <Title className="font-sans text-7xl text-white">
-                  Send your photo
+                <Title
+                  className="font-sans text-7xl font-extrabold"
+                  style={{ color: "#141301" }}
+                >
+                  Upload your photo
                 </Title>
               </Center>
             </Grid.Col>
@@ -153,7 +160,11 @@ export const FileUploadSection = () => {
                 >
                   {(props) => (
                     <Button
-                      className="float-right rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-amber-950"
+                      className="float-right from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r  hover:text-white"
+                      variant="outline"
+                      radius={"xl"}
+                      color="pink"
+                      size="lg"
                       {...props}
                     >
                       Upload image
@@ -164,7 +175,11 @@ export const FileUploadSection = () => {
             </Grid.Col>
             <Grid.Col span={6}>
               <Button
-                className="float-left rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-amber-950"
+                className="float-left from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r hover:text-white"
+                variant="outline"
+                radius={"xl"}
+                color="pink"
+                size="lg"
                 onClick={activateWebcam}
               >
                 Use camera
@@ -178,8 +193,16 @@ export const FileUploadSection = () => {
           <form onSubmit={form.onSubmit(() => saveRequest(transformedValues))}>
             <Center>
               <Button
-                className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-amber-950"
+                className="bg-[#AA1155] no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B]"
+                w={"35%"}
+                m={15}
+                variant="filled"
+                color="pink"
                 type="submit"
+                radius={"xl"}
+                size={"lg"}
+                loading={isLoading}
+                disabled={file ? false : true}
               >
                 Send!
               </Button>
