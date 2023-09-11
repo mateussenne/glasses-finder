@@ -19,4 +19,25 @@ export const requestRouter = createTRPCRouter({
       },
     });
   }),
+
+  getOneWithGlasses: publicProcedure
+    .input(z.string())
+    .query(async ({ input }) => {
+      return await prisma.$transaction(async (tx) => {
+        const request = await tx.request.findFirstOrThrow({
+          where: {
+            id: input,
+          },
+        });
+
+        return await tx.faceShape.findFirst({
+          where: {
+            shape: request.shape,
+          },
+          include: {
+            Glasses: true,
+          },
+        });
+      });
+    }),
 });

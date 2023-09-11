@@ -8,14 +8,15 @@ import { RecomendedGlasses } from "~/components/RecomendedGlases/RecomendedGlass
 export default function Home() {
   const router = useRouter();
   const { requestId = null } = router.query;
-  const [loadedRequest, setLoadedRequest] = useState<string | string[] | null>(
-    null
-  );
-  // Get the request and list glasses for the faceType
+  const [loadedRequest, setLoadedRequest] = useState<string | null>(null);
+
   useEffect(() => {
     if (window != undefined) {
       const storedRequest = localStorage.getItem("requestId");
-      setLoadedRequest(storedRequest ?? requestId);
+
+      setLoadedRequest(
+        !storedRequest && !Array.isArray(requestId) ? requestId : storedRequest
+      );
     }
   }, [requestId]);
 
@@ -29,7 +30,7 @@ export default function Home() {
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#1c2046] to-[#18140b]">
         <Container>
           {loadedRequest != null ? (
-            <RecomendedGlasses />
+            <RecomendedGlasses requestId={loadedRequest} />
           ) : (
             <FileUploadSection />
           )}
