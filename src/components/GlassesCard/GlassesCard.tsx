@@ -1,21 +1,22 @@
 import { Card, Paper, Grid, Badge, Button, Image, Text } from "@mantine/core";
+import { type Brand, type Glasses } from "@prisma/client";
 
-export const GlassesCard = () => {
+interface GlassesCardProps {
+  glasses: Glasses & { Brand: Brand };
+}
+
+export const GlassesCard = ({ glasses }: GlassesCardProps) => {
   return (
     <Card radius={"lg"} withBorder shadow="sm">
       <Card.Section>
-        <Image
-          src="https://images.ray-ban.com/is/image/RayBan/805289653653__STD__shad__qt.png?impolicy=RB_Product&width=800&bgc=%23f2f2f2"
-          height={250}
-          alt={"Ray ban"}
-        />
+        <Image src={String(glasses.image)} height={250} alt={glasses.name} />
       </Card.Section>
       <Paper p={5}>
         <Grid>
           <Grid.Col span={10}>
             {" "}
             <Text weight={"bold"} size={"lg"}>
-              Clubmaster Classic
+              {glasses.name}
             </Text>
           </Grid.Col>
           <Grid.Col span={2}>
@@ -25,11 +26,11 @@ export const GlassesCard = () => {
               size="md"
               className="float-right"
             >
-              Ray Ban
+              {glasses.Brand.name}
             </Badge>
           </Grid.Col>
           <Grid.Col span={12}>
-            <Text size={"xl"}>$60,00</Text>
+            <Text size={"xl"}>${glasses.price}</Text>
           </Grid.Col>
           <Grid.Col span={12}>
             <Button

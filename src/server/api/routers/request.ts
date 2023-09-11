@@ -35,7 +35,11 @@ export const requestRouter = createTRPCRouter({
             shape: request.shape,
           },
           include: {
-            Glasses: true,
+            Glasses: {
+              include: {
+                Brand: true,
+              },
+            },
           },
         });
       });

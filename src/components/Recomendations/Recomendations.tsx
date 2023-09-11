@@ -37,16 +37,17 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
               </Text>
             </Paper>
           )}
-
-          <Paper p={15}>
-            {" "}
-            <Text weight={"bold"}>
-              Here goes a list of glasses that might look good on you:
-            </Text>
-            <Container size={"lg"} mt={20}>
-              <GlassesCarousel />
-            </Container>
-          </Paper>
+          {request?.Glasses && (
+            <Paper p={15}>
+              {" "}
+              <Text weight={"bold"}>
+                Here goes a list of glasses that might look good on you:
+              </Text>
+              <Container size={"lg"} mt={20}>
+                <GlassesCarousel glasses={request?.Glasses} />
+              </Container>
+            </Paper>
+          )}
         </Card>
       </Grid.Col>
     </Grid>

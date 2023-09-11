@@ -1,18 +1,21 @@
 import { Carousel } from "@mantine/carousel";
 import { GlassesCard } from "../GlassesCard";
+import { type Brand, type Glasses } from "@prisma/client";
 
-export const GlassesCarousel = () => {
+interface CarouselProps {
+  glasses: (Glasses & { Brand: Brand })[];
+}
+
+export const GlassesCarousel = ({ glasses }: CarouselProps) => {
   return (
     <Carousel slideSize="50%" height={450} slideGap="md" loop>
-      <Carousel.Slide>
-        <GlassesCard />
-      </Carousel.Slide>
-      <Carousel.Slide>
-        <GlassesCard />
-      </Carousel.Slide>
-      <Carousel.Slide>
-        <GlassesCard />
-      </Carousel.Slide>
+      {glasses.map((g) => {
+        return (
+          <Carousel.Slide key={g.id}>
+            <GlassesCard glasses={g} />
+          </Carousel.Slide>
+        );
+      })}
     </Carousel>
   );
 };
