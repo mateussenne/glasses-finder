@@ -1,5 +1,6 @@
-import { Card, Grid, Paper, Text, Title } from "@mantine/core";
+import { Card, Container, Grid, Paper, Text, Title } from "@mantine/core";
 import { UseRequestGetOneWithGlasses } from "~/server/api/hooks/use-request-get-one-with-glasses";
+import { GlassesCarousel } from "../GlassesCarousel/GlassesCarousel";
 
 interface recomendedGlasesProps {
   requestId: string;
@@ -33,8 +34,10 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
             <Text weight={"bold"}>
               Here goes a list of glasses that might look good on you:
             </Text>
+            <Container size={"lg"} mt={20}>
+              <GlassesCarousel />
+            </Container>
           </Paper>
-          {/* <p>{JSON.stringify(request?.Glasses)}</p> */}
         </Card>
       </Grid.Col>
     </Grid>
