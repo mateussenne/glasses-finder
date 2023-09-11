@@ -6,7 +6,7 @@ import { Shape } from "@prisma/client";
 const input = z.object({
   faceShapeData: z.object({
     shape: z.nativeEnum(Shape),
-    precision: z.number(),
+    precision: z.string(),
   }),
 });
 
@@ -15,6 +15,7 @@ export const requestRouter = createTRPCRouter({
     return await prisma.request.create({
       data: {
         shape: input.faceShapeData.shape,
+        precision: input.faceShapeData.precision,
       },
     });
   }),

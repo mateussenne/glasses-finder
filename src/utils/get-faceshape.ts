@@ -9,7 +9,7 @@ type FaceShapeResponse = {
 const faceShapes: Record<string, Shape> = {
   Oval: "Oval",
   Square: "Square",
-  Circular: "Circular",
+  Round: "Round",
   Heart: "Heart",
   Diamond: "Diamond",
   Oblong: "Oblong",
@@ -32,9 +32,9 @@ export const getFaceShape = async (formData: FormData) => {
     });
   }
 
-  const result: { shape: Shape; precision: number } = {
+  const result: { shape: Shape; precision: string } = {
     shape,
-    precision: parsedResponse.precision,
+    precision: parsedResponse.precision.toFixed(2),
   };
 
   return result;

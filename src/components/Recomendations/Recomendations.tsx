@@ -1,6 +1,7 @@
 import { Card, Container, Grid, Paper, Text, Title } from "@mantine/core";
 import { UseRequestGetOneWithGlasses } from "~/server/api/hooks/use-request-get-one-with-glasses";
 import { GlassesCarousel } from "../GlassesCarousel/GlassesCarousel";
+import { shapeDescription } from "~/utils/shape-description";
 
 interface recomendedGlasesProps {
   requestId: string;
@@ -18,7 +19,7 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
               style={{ color: "#141301" }}
               weight={"bolder"}
             >
-              Your face is {request?.shape}!
+              Your face format is {request?.shape}!
             </Title>
             <Text
               size={"md"}
@@ -29,14 +30,14 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
               Precision: 90%
             </Text>
           </Card.Section>
-          <Paper p={15}>
-            <Text style={{ color: "#141301" }}>
-              Oblong faces lorem ipsum bla bla bla bla bla Oblong faces lorem
-              ipsum bla bla bla bla bla Oblong faces lorem ipsum bla bla bla bla
-              bla Oblong faces lorem ipsum bla bla bla bla bla Oblong faces
-              lorem ipsum bla bla bla
-            </Text>
-          </Paper>
+          {request?.shape && (
+            <Paper p={15}>
+              <Text style={{ color: "#141301" }}>
+                {shapeDescription(request?.shape)}
+              </Text>
+            </Paper>
+          )}
+
           <Paper p={15}>
             {" "}
             <Text weight={"bold"}>
