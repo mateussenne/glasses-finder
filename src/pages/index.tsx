@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FileUploadSection } from "~/components/FileUploadSection";
-import { RecomendedGlasses } from "~/components/RecomendedGlases/RecomendedGlasses";
+import { Recomendations } from "~/components/Recomendations/Recomendations";
 
 export default function Home() {
   const router = useRouter();
@@ -28,9 +28,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-[#70DBFF] via-[#FCFFF7] to-[#F390BE] ">
-        <Container>
+        <Container size={"xl"}>
           {loadedRequest != null ? (
-            <RecomendedGlasses requestId={loadedRequest} />
+            <Recomendations requestId={loadedRequest} />
           ) : (
             <FileUploadSection />
           )}
