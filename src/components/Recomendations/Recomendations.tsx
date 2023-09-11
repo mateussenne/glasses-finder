@@ -20,6 +20,14 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
             >
               Your face is {request?.shape}!
             </Title>
+            <Text
+              size={"md"}
+              style={{ color: "#E9207B" }}
+              weight={"bolder"}
+              className="text-center"
+            >
+              Precision: 90%
+            </Text>
           </Card.Section>
           <Paper p={15}>
             <Text style={{ color: "#141301" }}>

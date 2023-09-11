@@ -78,13 +78,17 @@ export const FileUploadSection = () => {
         if (blob) {
           const file = new File([blob], "photosnap.jpg");
           setFile(file);
+          console.log(file);
         }
       });
     }
   };
 
   useMemo(() => {
-    setFile(form.values.file);
+    if (form.values.file) {
+      setFile(form.values.file);
+    }
+
     async function loadFile() {
       if (file) {
         const formData = new FormData();
@@ -138,7 +142,22 @@ export const FileUploadSection = () => {
               className={cameraPhoto ? "hidden" : ""}
               ref={videoRef}
             ></video>
-            <Button onClick={takePhoto}>Take photo!</Button>
+            {!file && (
+              <Center>
+                <Button
+                  className="bg-[#AA1155] text-white no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B]  hover:text-white"
+                  variant="outline"
+                  radius={"xl"}
+                  color="pink"
+                  size="xl"
+                  w={"100%"}
+                  mt={15}
+                  onClick={takePhoto}
+                >
+                  Take photo!
+                </Button>
+              </Center>
+            )}
           </Grid.Col>
         ) : (
           <>
