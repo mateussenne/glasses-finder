@@ -4,7 +4,6 @@ import { prisma } from "~/server/db";
 import { Shape } from "@prisma/client";
 
 const input = z.object({
-  file: z.string().optional(),
   faceShapeData: z.object({
     shape: z.nativeEnum(Shape),
     precision: z.number(),

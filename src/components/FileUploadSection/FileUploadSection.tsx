@@ -12,7 +12,7 @@ type FaceShapeData = {
 };
 
 interface FileForm {
-  file?: string;
+  file: File | null;
   faceShapeData: FaceShapeData;
 }
 
@@ -26,7 +26,7 @@ export const FileUploadSection = () => {
   const { mutate: saveRequest, data: generatedRequest } = UseRequestCreate();
   const form = useForm<FileForm>({
     initialValues: {
-      file: undefined,
+      file: null,
       faceShapeData,
     },
   });
@@ -80,11 +80,11 @@ export const FileUploadSection = () => {
   };
 
   useMemo(() => {
+    setFile(form.values.file);
     async function loadFile() {
       if (file) {
         const formData = new FormData();
         formData.append("file", file);
-        // await fetch("/api/uploads/file-upload", {
         const response = await getFaceShape(formData);
         setFaceShapeData(response);
         if (generatedRequest) {
@@ -98,7 +98,7 @@ export const FileUploadSection = () => {
     }
     //  eslint-disable-next-line @typescript-eslint/no-floating-promises
     loadFile();
-  }, [file, generatedRequest, router]);
+  }, [file, form.values.file, generatedRequest, router]);
 
   const transformedValues = useMemo(() => {
     return {
