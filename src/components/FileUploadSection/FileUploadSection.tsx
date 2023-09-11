@@ -8,7 +8,7 @@ import { getFaceShape } from "~/utils/get-faceshape";
 
 type FaceShapeData = {
   shape: Shape;
-  precision: string;
+  precision: number;
 };
 
 interface FileForm {
@@ -21,7 +21,7 @@ export const FileUploadSection = () => {
   const [file, setFile] = useState<File | null>(null);
   const [faceShapeData, setFaceShapeData] = useState<FaceShapeData>({
     shape: "Square",
-    precision: "0",
+    precision: 0,
   });
   const {
     mutate: saveRequest,

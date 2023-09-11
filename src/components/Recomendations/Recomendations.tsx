@@ -8,7 +8,7 @@ interface recomendedGlasesProps {
 }
 
 export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
-  const { data: request } = UseRequestGetOneWithGlasses(requestId);
+  const { data: requestData } = UseRequestGetOneWithGlasses(requestId);
   return (
     <Grid>
       <Grid.Col span={12}>
@@ -19,7 +19,7 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
               style={{ color: "#141301" }}
               weight={"bolder"}
             >
-              Your face format is {request?.shape}!
+              Your face format is {requestData?.faceShape?.shape}!
             </Title>
             <Text
               size={"md"}
@@ -27,24 +27,24 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
               weight={"bolder"}
               className="text-center"
             >
-              Precision: 90%
+              Precision: {requestData?.request.precision}%
             </Text>
           </Card.Section>
-          {request?.shape && (
+          {requestData?.faceShape?.shape && (
             <Paper p={15}>
               <Text style={{ color: "#141301" }}>
-                {shapeDescription(request?.shape)}
+                {shapeDescription(requestData?.faceShape?.shape)}
               </Text>
             </Paper>
           )}
-          {request?.Glasses && (
+          {requestData?.faceShape?.Glasses && (
             <Paper p={15}>
               {" "}
               <Text weight={"bold"}>
                 Here goes a list of glasses that might look good on you:
               </Text>
               <Container size={"lg"} mt={20}>
-                <GlassesCarousel glasses={request?.Glasses} />
+                <GlassesCarousel glasses={requestData?.faceShape.Glasses} />
               </Container>
             </Paper>
           )}

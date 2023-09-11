@@ -8,7 +8,7 @@ interface CarouselProps {
 
 export const GlassesCarousel = ({ glasses }: CarouselProps) => {
   return (
-    <Carousel slideSize="50%" height={450} slideGap="md" loop>
+    <Carousel slideSize="50%" height={470} slideGap="md" loop>
       {glasses.map((g) => {
         return (
           <Carousel.Slide key={g.id}>

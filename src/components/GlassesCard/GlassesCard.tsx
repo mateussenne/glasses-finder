@@ -30,6 +30,9 @@ export const GlassesCard = ({ glasses }: GlassesCardProps) => {
             </Badge>
           </Grid.Col>
           <Grid.Col span={12}>
+            <Text size={"sm"}>{glasses.description}</Text>
+          </Grid.Col>
+          <Grid.Col span={12}>
             <Text size={"xl"}>${glasses.price}</Text>
           </Grid.Col>
           <Grid.Col span={12}>
