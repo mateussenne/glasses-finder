@@ -3,6 +3,7 @@ import {
   Card,
   Container,
   Grid,
+  Image,
   Paper,
   Text,
   Title,
@@ -18,6 +19,8 @@ interface recomendedGlasesProps {
 
 export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
   const { data: requestData } = UseRequestGetOneWithGlasses(requestId);
+  const faceShape = requestData?.faceShape?.shape;
+  const shapeImgPath = `/images/${faceShape}.png`;
   const router = useRouter();
   const clearRequest = () => {
     localStorage.removeItem("requestId");
@@ -40,7 +43,7 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
               style={{ color: "#141301" }}
               weight={"bolder"}
             >
-              Your face format is {requestData?.faceShape?.shape}!
+              Your face format is {faceShape}!
             </Title>
             <Text
               size={"md"}
@@ -51,28 +54,33 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
               Precision: {requestData?.request.precision}%
             </Text>
           </Card.Section>
-          {requestData?.faceShape?.shape && (
+          {faceShape && (
             <Paper className="bg-[#FCFFF7]" p={15}>
               <Grid>
                 <Grid.Col span={2}>
-                  <Button
-                    className="bg-[#AA1155] text-white no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B]  hover:text-white"
-                    variant="outline"
-                    radius={"xl"}
-                    color="pink"
-                    size="sm"
-                    w={"100%"}
-                    mt={5}
-                    onClick={clearRequest}
-                  >
-                    Take photo!
-                  </Button>
+                  <Image
+                    src={shapeImgPath}
+                    alt={faceShape}
+                    height={150}
+                    width={100}
+                  />
                 </Grid.Col>
                 <Grid.Col span={10}>
                   {" "}
                   <Text style={{ color: "#141301" }}>
-                    {shapeDescription(requestData?.faceShape?.shape)}
+                    {shapeDescription(faceShape)}
                   </Text>
+                  <Button
+                    className="no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B]  hover:text-white"
+                    variant="outline"
+                    radius={"xl"}
+                    color="pink"
+                    size="sm"
+                    mt={5}
+                    onClick={clearRequest}
+                  >
+                    Try again
+                  </Button>
                 </Grid.Col>
               </Grid>
             </Paper>
