@@ -161,16 +161,6 @@ export const FileUploadSection = () => {
           </Grid.Col>
         ) : (
           <>
-            <Grid.Col span={12}>
-              <Center>
-                <Title
-                  className="font-sans text-7xl font-extrabold"
-                  style={{ color: "#141301" }}
-                >
-                  Upload your photo
-                </Title>
-              </Center>
-            </Grid.Col>
             <Grid.Col span={6}>
               <form>
                 <FileButton
