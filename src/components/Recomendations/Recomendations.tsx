@@ -1,7 +1,16 @@
-import { Card, Container, Grid, Paper, Text, Title } from "@mantine/core";
+import {
+  Button,
+  Card,
+  Container,
+  Grid,
+  Paper,
+  Text,
+  Title,
+} from "@mantine/core";
 import { UseRequestGetOneWithGlasses } from "~/server/api/hooks/use-request-get-one-with-glasses";
 import { GlassesCarousel } from "../GlassesCarousel/GlassesCarousel";
 import { shapeDescription } from "~/utils/shape-description";
+import { useRouter } from "next/router";
 
 interface recomendedGlasesProps {
   requestId: string;
@@ -9,6 +18,11 @@ interface recomendedGlasesProps {
 
 export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
   const { data: requestData } = UseRequestGetOneWithGlasses(requestId);
+  const router = useRouter();
+  const clearRequest = () => {
+    localStorage.removeItem("requestId");
+    router.reload();
+  };
   return (
     <Grid>
       <Grid.Col span={12}>
@@ -39,9 +53,28 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
           </Card.Section>
           {requestData?.faceShape?.shape && (
             <Paper className="bg-[#FCFFF7]" p={15}>
-              <Text style={{ color: "#141301" }}>
-                {shapeDescription(requestData?.faceShape?.shape)}
-              </Text>
+              <Grid>
+                <Grid.Col span={2}>
+                  <Button
+                    className="bg-[#AA1155] text-white no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B]  hover:text-white"
+                    variant="outline"
+                    radius={"xl"}
+                    color="pink"
+                    size="sm"
+                    w={"100%"}
+                    mt={5}
+                    onClick={clearRequest}
+                  >
+                    Take photo!
+                  </Button>
+                </Grid.Col>
+                <Grid.Col span={10}>
+                  {" "}
+                  <Text style={{ color: "#141301" }}>
+                    {shapeDescription(requestData?.faceShape?.shape)}
+                  </Text>
+                </Grid.Col>
+              </Grid>
             </Paper>
           )}
           {requestData?.faceShape?.Glasses && (
