@@ -37,6 +37,8 @@ model Account {
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@index([userId])
+    @@index([providerAccountId])
 }
 
 model Session {
@@ -45,6 +47,8 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
 
 model User {
@@ -97,11 +101,13 @@ model Glasses {
     faceShapes  FaceShape[]
     description String?     @db.Text
     image       String
-    brand       Brand       @relation(fields: [brandId], references: [id])
+    brand       Brand       @relation(fields: [brandId], references: [id], onDelete: Cascade)
     brandId     String
     url         String?
     createdAt   DateTime    @default(now())
     updatedAt   DateTime?   @updatedAt
+
+    @@index([brandId])
 }
 
 model FaceShape {
