@@ -7,11 +7,11 @@ interface GlassesCardProps {
 
 export const GlassesCard = ({ glasses }: GlassesCardProps) => {
   return (
-    <Card radius={"lg"} withBorder shadow="sm">
+    <Card className="bg-[#FCFFF7]" radius={"lg"} withBorder shadow="sm">
       <Card.Section>
         <Image src={String(glasses.image)} height={250} alt={glasses.name} />
       </Card.Section>
-      <Paper p={5}>
+      <Paper className="bg-[#FCFFF7]" p={5}>
         <Grid>
           <Grid.Col span={10}>
             {" "}

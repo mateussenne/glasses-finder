@@ -12,7 +12,14 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
   return (
     <Grid>
       <Grid.Col span={12}>
-        <Card radius={"lg"} p={50} w={800} withBorder shadow="xl">
+        <Card
+          className="bg-[#FCFFF7]"
+          radius={"lg"}
+          p={50}
+          w={800}
+          withBorder
+          shadow="xl"
+        >
           <Card.Section withBorder p={50}>
             <Title
               className="text-center text-5xl"
@@ -31,14 +38,14 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
             </Text>
           </Card.Section>
           {requestData?.faceShape?.shape && (
-            <Paper p={15}>
+            <Paper className="bg-[#FCFFF7]" p={15}>
               <Text style={{ color: "#141301" }}>
                 {shapeDescription(requestData?.faceShape?.shape)}
               </Text>
             </Paper>
           )}
           {requestData?.faceShape?.Glasses && (
-            <Paper p={15}>
+            <Paper className="bg-[#FCFFF7]" p={15}>
               {" "}
               <Text weight={"bold"}>
                 Here goes a list of glasses that might look good on you:
