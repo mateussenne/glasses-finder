@@ -1,15 +1,15 @@
 import { type Shape } from "@prisma/client";
 
 export const shapeDescriptions: Record<Shape, string> = {
-  Oval: "An oval face shape is a combination of square and round. Typically, the forehead width is smaller than the cheekbone width, and the face is longer than it is wide. Dr. Shafer adds that the jawline and chin are more rounded vs. the distinguished, angular lines of a square face.",
+  Oval: "An oval shape is a longer version of the round face. Your chin still stays rounded, but the length of your face is more than the width. Your forehead is probably the widest part of your face.",
   Round:
-    "The round face shape is characterized by a wide hairline and fullness below the cheekbones. These face shapes look great with longer hair that lengthens the face. Long layers are the most flattering for this face shape, where short layers can accentuate the roundness of the face. Side swept bangs can also add length to a round face.",
+    "You have a round face when the vertical to horizontal ratio is equal as you look in the mirror. The majority of your features are soft and rounded. You also probably have a round chin. Your cheeks are the widest part of your face, which gives it that rounded shape.",
   Square:
-    "You have a square face shape if your forehead, cheekbones, and jawline are the same width. You also have a jawline and forehead that are wider and more pronounced, notes Dr. Shafer. While the measurements are similar to that of a round face, the total structure of your face feels more angular with minimal curves.",
+    "You have a square face shape if your forehead, cheekbones, and jawline are the same width, making the face proportinal. This means that the vertical to horizontal proportion is nearly one to one. People have a square-shaped face if they have comparatively straight sides with minimal curve at the chin. They also have angled jaws.",
   Diamond:
-    "The diamond face shape is a more angular version of an oval face shape. Typically, cheekbones are high and strong, and the distance between them is slightly wider than the forehead length. The chin is also more narrow and pointed, and the hairline tends to come to a more angular point.",
+    "Women with diamond-shaped faces will probably have high cheekbones and pointed chins. You might think that this could be a heart-shaped face as well, but not really. The main difference is that the forehead is narrower for someone with a diamond face.",
   Heart:
-    "This face shape is characterized by a wider forehead and narrower chin. Adding side swept bangs to this style helps disguise the width of the forehead. Keeping the style fuller around the jaw helps to add weight to the narrower chin.",
+    "The main characteristics of a heart-shaped face are a pointed chin and a wide forehead. It doesn’t really matter whether you have a widow’s peak or not. This face shape is also called an inverted triangle, because when you think about it, your forehead is the widest part of your face and the chin is pointed.",
   Oblong:
-    "Rectangular faces have a face length that is longer than the width of their face. Their forehead, cheekbones, and jaw also look to be the same width apart. Dr. Sigal says that a rectangular shape is most often seen in older people in cases where skin from their cheeks and jowls tends to settle into the lower half of their face. 'On occasion, younger people have really prominent buccal fat pads,'he adds. (The buccal fat pad is the natural mass of fat found in your cheek.",
+    "Rectangular faces have a face length that is longer than the width of their face. This can also be known as an oblong face shape. The only difference between a rectangular face and an oblong face is that an oblong face is slightly less angled. It follows the same basic rectangular shape though. You have a rectangular face shape if your forehead, cheeks, and jawline are nearly the same width. The chin is only slightly curved.",
 };
