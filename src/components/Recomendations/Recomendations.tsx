@@ -31,7 +31,7 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
           className="bg-[#FCFFF7]"
           radius={"lg"}
           p={40}
-          w={800}
+          w={1000}
           withBorder
           shadow="xl"
         >
@@ -85,7 +85,7 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
               </Grid>
             </Paper>
           )}
-          {requestData?.faceShape?.Glasses && (
+          {requestData?.faceShape?.glasses && (
             <Paper className="bg-[#FCFFF7]" p={15}>
               {" "}
               <Text
@@ -96,7 +96,7 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
                 Glasses that might look good on you:
               </Text>
               <Container size={"lg"} mt={20}>
-                <GlassesCarousel glasses={requestData?.faceShape.Glasses} />
+                <GlassesCarousel glasses={requestData?.faceShape.glasses} />
               </Container>
             </Paper>
           )}

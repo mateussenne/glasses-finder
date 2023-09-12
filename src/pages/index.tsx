@@ -33,9 +33,6 @@ export default function Home() {
             <Recomendations requestId={loadedRequest} />
           ) : (
             <>
-              <Title className=" bg-gradient-to-r from-[#70DBFF] to-[#AA1155] bg-clip-text text-center text-9xl font-extrabold text-transparent">
-                Glasses Finder
-              </Title>
               <FileUploadSection />
             </>
           )}

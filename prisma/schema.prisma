@@ -97,8 +97,9 @@ model Glasses {
     faceShapes  FaceShape[]
     description String?     @db.Text
     image       String
-    Brand       Brand       @relation(fields: [brandId], references: [id])
+    brand       Brand       @relation(fields: [brandId], references: [id])
     brandId     String
+    url         String?
     createdAt   DateTime    @default(now())
     updatedAt   DateTime?   @updatedAt
 }
@@ -106,7 +107,7 @@ model Glasses {
 model FaceShape {
     id        String    @id @default(cuid())
     shape     Shape
-    Glasses   Glasses[]
+    glasses   Glasses[]
     createdAt DateTime  @default(now())
     updatedAt DateTime? @updatedAt
 }

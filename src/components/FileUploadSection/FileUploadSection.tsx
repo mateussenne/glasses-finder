@@ -1,4 +1,4 @@
-import { Grid, Button, Center, Title, FileButton } from "@mantine/core";
+import { Grid, Button, Center, FileButton, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { type Shape } from "@prisma/client";
 import { useRouter } from "next/router";
@@ -161,6 +161,11 @@ export const FileUploadSection = () => {
           </Grid.Col>
         ) : (
           <>
+            <Grid.Col span={12}>
+              <Title className=" bg-gradient-to-r from-[#70DBFF] to-[#AA1155] bg-clip-text text-center text-9xl font-extrabold text-transparent">
+                Glasses Finder
+              </Title>
+            </Grid.Col>
             <Grid.Col span={6}>
               <form>
                 <FileButton
