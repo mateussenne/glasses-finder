@@ -22,20 +22,24 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(500).end();
   }
 
-  try {
-    await s3
-      .putObject({
-        Bucket,
-        Key: file?.originalFilename ?? "test.jpg",
-        Body: fs.createReadStream(file?.filepath),
-        ContentType: "image/jpeg",
-      })
-      .promise();
-    return res.status(200).end();
-  } catch (e) {
-    console.log(e);
-    return res.status(500).end();
-  }
+  const base64img = fs.readFileSync(file.filepath, "base64");
+
+  return res.send({ base64img });
+
+  // try {
+  //   await s3
+  //     .putObject({
+  //       Bucket,
+  //       Key: file?.originalFilename ?? "test.jpg",
+  //       Body: fs.createReadStream(file?.filepath),
+  //       ContentType: "image/jpeg",
+  //     })
+  //     .promise();
+  //   return res.status(200).end();
+  // } catch (e) {
+  //   console.log(e);
+  //   return res.status(500).end();
+  // }
 }
 
 export const config = {
