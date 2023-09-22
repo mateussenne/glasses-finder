@@ -34,6 +34,7 @@ export const getFaceShape = async (base64img: string) => {
       }
 
       const { body: parsedResponse } = await response.json();
+      console.log(parsedResponse);
       const shape = faceShapes[parsedResponse.class];
 
       if (!shape) {
