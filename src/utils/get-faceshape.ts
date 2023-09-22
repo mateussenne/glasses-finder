@@ -39,7 +39,7 @@ export const getFaceShape = async (base64img: string) => {
 
       const result: { shape: Shape; precision: number } = {
         shape,
-        precision: parsedResponse.precision * 100,
+        precision: parsedResponse.body.precision * 100,
       };
 
       return result;
