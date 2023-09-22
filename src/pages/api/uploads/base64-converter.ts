@@ -3,20 +3,19 @@ import formidable from "formidable";
 import type IncomingForm from "formidable/Formidable";
 import fs from "fs";
 
-const Bucket = process.env.AWS_S3_BUCKET_NAME;
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const form: IncomingForm = formidable({});
   const parsedForm = await form.parse(req);
 
   // Verify if file is present from parsedForm
-  if (!Bucket || !parsedForm[1].file) {
-    console.log("No bucket or form files provided");
+  if (!parsedForm[1].file) {
+    console.log("No form file provided");
     return res.status(500).end();
   }
   const file = parsedForm[1].file[0];
 
   if (!file) {
-    console.log("No file provided");
+    console.log("No file loaded");
     return res.status(500).end();
   }
 
