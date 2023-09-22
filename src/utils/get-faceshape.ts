@@ -2,8 +2,7 @@ import { type Shape } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
 type FaceShapeResponse = {
-  class: string;
-  precision: number;
+  body: { class: string; precision: number };
 };
 
 const faceShapes: Record<string, Shape> = {
@@ -29,7 +28,7 @@ export const getFaceShape = async (base64img: string) => {
       const parsedResponse: FaceShapeResponse =
         (await response.json()) as FaceShapeResponse;
 
-      const shape = faceShapes[parsedResponse.class];
+      const shape = faceShapes[parsedResponse.body.class];
 
       if (!shape) {
         throw new TRPCError({
