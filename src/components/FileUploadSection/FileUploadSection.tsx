@@ -1,28 +1,19 @@
 import { Grid, Button, Center, FileButton, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { type Shape } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { UseRequestCreate } from "~/server/api/hooks/use-request-create";
-import { getFaceShape } from "~/utils/get-faceshape";
-
-type FaceShapeData = {
-  shape: Shape;
-  precision: number;
-};
+import { convertToBase64 } from "~/utils/convert-to-base64";
 
 interface FileForm {
   file: File | null;
-  faceShapeData: FaceShapeData;
+  base64Image: string;
 }
 
 export const FileUploadSection = () => {
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
-  const [faceShapeData, setFaceShapeData] = useState<FaceShapeData>({
-    shape: "Square",
-    precision: 0,
-  });
+  const [base64Image, setBase64Image] = useState("");
   const {
     mutate: saveRequest,
     data: generatedRequest,
@@ -31,7 +22,7 @@ export const FileUploadSection = () => {
   const form = useForm<FileForm>({
     initialValues: {
       file: null,
-      faceShapeData,
+      base64Image: "",
     },
   });
 
@@ -93,8 +84,11 @@ export const FileUploadSection = () => {
       if (file) {
         const formData = new FormData();
         formData.append("file", file);
-        const response = await getFaceShape(formData);
-        setFaceShapeData(response);
+        const response = await convertToBase64(formData);
+        if (response) {
+          setBase64Image(response.base64img);
+        }
+
         if (generatedRequest) {
           localStorage.setItem("requestId", generatedRequest?.id);
           await router.push({
@@ -111,9 +105,9 @@ export const FileUploadSection = () => {
   const transformedValues = useMemo(() => {
     return {
       ...form.values,
-      faceShapeData,
+      base64Image,
     };
-  }, [faceShapeData, form]);
+  }, [form, base64Image]);
 
   const width = 800;
   const height = 600;

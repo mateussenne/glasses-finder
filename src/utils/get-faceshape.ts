@@ -6,10 +6,6 @@ type FaceShapeResponse = {
   precision: number;
 };
 
-type ConverterResponse = {
-  base64img: string;
-};
-
 const faceShapes: Record<string, Shape> = {
   Oval: "Oval",
   Square: "Square",
@@ -21,24 +17,19 @@ const faceShapes: Record<string, Shape> = {
 
 const faceShapeUrl = process.env.FACESHAPE_PREDICTION_URL;
 
-export const getFaceShape = async (formData: FormData) => {
+export const getFaceShape = async (base64img: string) => {
   try {
-    const converterResponse = await fetch("/api/uploads/file-upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    const { base64img } = (await converterResponse.json()) as ConverterResponse;
-    return console.log(base64img);
-
-    if (faceShapeUrl) {
+    if (faceShapeUrl && process.env.FACESHAPE_API_KEY) {
       const response = await fetch(faceShapeUrl, {
         method: "POST",
+        headers: { "x-api-Key": process.env.FACESHAPE_API_KEY },
         body: JSON.stringify({ img: base64img }),
       });
 
       const parsedResponse: FaceShapeResponse =
         (await response.json()) as FaceShapeResponse;
+
+      return console.log(parsedResponse);
       const shape = faceShapes[parsedResponse.class];
 
       if (!shape) {

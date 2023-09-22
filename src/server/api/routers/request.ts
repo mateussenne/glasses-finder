@@ -1,21 +1,31 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { prisma } from "~/server/db";
-import { Shape } from "@prisma/client";
+import { type Shape } from "@prisma/client";
+import { getFaceShape } from "~/utils/get-faceshape";
+
+type FaceShapeData = {
+  shape: Shape;
+  precision: number;
+};
 
 const input = z.object({
-  faceShapeData: z.object({
-    shape: z.nativeEnum(Shape),
-    precision: z.number(),
-  }),
+  base64Image: z.string(),
 });
 
 export const requestRouter = createTRPCRouter({
   create: publicProcedure.input(input).mutation(async ({ input }) => {
+    const faceShapeData = await getFaceShape(input.base64Image);
+    return;
+
+    if (!faceShapeData) {
+      return;
+    }
+
     return await prisma.request.create({
       data: {
-        shape: input.faceShapeData.shape,
-        precision: input.faceShapeData.precision,
+        shape: faceShapeData.shape,
+        precision: faceShapeData.precision,
       },
     });
   }),
