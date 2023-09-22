@@ -27,12 +27,11 @@ export const getFaceShape = async (base64img: string) => {
         headers: { "x-api-Key": process.env.FACESHAPE_API_KEY },
         body: JSON.stringify({ img: base64img }),
       });
-
+      console.log(response);
       if (!response.body) {
         console.log("no body returned");
         return;
       }
-
       const { body: parsedResponse } = await response.json();
       console.log(parsedResponse);
       const shape = faceShapes[parsedResponse.class];
