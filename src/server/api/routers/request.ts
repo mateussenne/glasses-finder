@@ -16,8 +16,7 @@ const input = z.object({
 export const requestRouter = createTRPCRouter({
   create: publicProcedure.input(input).mutation(async ({ input }) => {
     const faceShapeData = await getFaceShape(input.base64Image);
-    return;
-
+    console.log(faceShapeData);
     if (!faceShapeData) {
       return;
     }
