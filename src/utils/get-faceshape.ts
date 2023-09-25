@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type Shape } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
@@ -25,15 +23,16 @@ export const getFaceShape = async (base64img: string) => {
       const response = await fetch(faceShapeUrl, {
         method: "POST",
         headers: { "x-api-Key": process.env.FACESHAPE_API_KEY },
-        body: JSON.stringify({ img: base64img }),
+        body: JSON.stringify({ image: base64img }),
       });
-      console.log(response);
-      if (!response.body) {
+
+      if (!response) {
         console.log("no body returned");
         return;
       }
-      const { body: parsedResponse } = await response.json();
-      console.log(parsedResponse);
+
+      const parsedResponse: FaceShapeResponse =
+        (await response.json()) as FaceShapeResponse;
       const shape = faceShapes[parsedResponse.class];
 
       if (!shape) {

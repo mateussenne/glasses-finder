@@ -20,9 +20,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   const base64img = fs.readFileSync(file.filepath, "base64");
-
-  console.log(base64img);
-
   return res.send({ base64img });
 }
 
