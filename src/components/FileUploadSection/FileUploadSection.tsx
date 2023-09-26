@@ -156,11 +156,14 @@ export const FileUploadSection = () => {
         ) : (
           <>
             <Grid.Col span={12}>
-              <Title className=" bg-gradient-to-r from-[#70DBFF] to-[#AA1155] bg-clip-text text-center text-9xl font-extrabold text-transparent">
+              <Title
+                className="bg-gradient-to-r from-[#70DBFF] to-[#AA1155] bg-clip-text text-center font-extrabold
+                text-transparent sm:text-7xl md:text-7xl lg:text-9xl"
+              >
                 Glasses Finder
               </Title>
             </Grid.Col>
-            <Grid.Col span={6}>
+            <Grid.Col lg={6} md={12} sm={12} xs={12}>
               <form>
                 <FileButton
                   accept="image/png,image/jpeg"
@@ -168,7 +171,7 @@ export const FileUploadSection = () => {
                 >
                   {(props) => (
                     <Button
-                      className="float-right from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r  hover:text-white"
+                      className=" from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r hover:text-white sm:w-full md:w-full lg:float-right lg:w-2/5"
                       variant="outline"
                       radius={"xl"}
                       color="pink"
@@ -181,9 +184,9 @@ export const FileUploadSection = () => {
                 </FileButton>
               </form>
             </Grid.Col>
-            <Grid.Col span={6}>
+            <Grid.Col lg={6} md={12} sm={12} xs={12}>
               <Button
-                className="float-left from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r hover:text-white"
+                className=" from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r hover:text-white sm:w-full md:w-full lg:float-left lg:w-2/5"
                 variant="outline"
                 radius={"xl"}
                 color="pink"
@@ -201,8 +204,9 @@ export const FileUploadSection = () => {
           <form onSubmit={form.onSubmit(() => saveRequest(transformedValues))}>
             <Center>
               <Button
-                className="bg-[#AA1155] no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B]"
-                w={"35%"}
+                className="bg-[#AA1155] no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B] sm:w-full md:w-full
+                lg:w-1/5"
+                // w={"35%"}
                 m={15}
                 variant="filled"
                 color="pink"

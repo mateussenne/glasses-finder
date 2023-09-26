@@ -6,9 +6,13 @@ interface CarouselProps {
   glasses: (Glasses & { brand: Brand })[];
 }
 
+const hello = () => {
+  alert("hello");
+};
+
 export const GlassesCarousel = ({ glasses }: CarouselProps) => {
   return (
-    <Carousel slideSize="50%" height={480} slideGap="md" loop>
+    <Carousel slideSize="50%" height={480} slideGap="md" loop onResize={hello}>
       {glasses.map((g) => {
         return (
           <Carousel.Slide key={g.id}>
