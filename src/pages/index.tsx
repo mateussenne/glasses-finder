@@ -1,4 +1,4 @@
-import { Center, Container, Image, Title } from "@mantine/core";
+import { Container } from "@mantine/core";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

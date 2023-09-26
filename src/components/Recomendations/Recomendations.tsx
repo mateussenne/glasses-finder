@@ -4,6 +4,7 @@ import {
   Container,
   Grid,
   Image,
+  LoadingOverlay,
   Paper,
   Text,
   Title,
@@ -18,7 +19,8 @@ interface recomendedGlasesProps {
 }
 
 export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
-  const { data: requestData } = UseRequestGetOneWithGlasses(requestId);
+  const { data: requestData, isFetching } =
+    UseRequestGetOneWithGlasses(requestId);
   const faceShape = requestData?.faceShape?.shape;
   const shapeImgPath = `/images/${faceShape}.png`;
   const clearRequest = () => {
@@ -26,6 +28,10 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
   };
   return (
     <Grid>
+      <LoadingOverlay
+        visible={isFetching}
+        loaderProps={{ color: "#E9207B", size: "xl" }}
+      />
       <Grid.Col span={12}>
         <Card
           className="bg-[#FCFFF7]"
