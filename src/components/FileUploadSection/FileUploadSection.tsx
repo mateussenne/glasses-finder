@@ -159,7 +159,7 @@ export const FileUploadSection = () => {
             <Grid.Col span={12}>
               <Title
                 className="bg-gradient-to-r from-[#70DBFF] to-[#AA1155] bg-clip-text text-center font-extrabold
-                text-transparent xs:text-8xl sm:text-7xl md:text-8xl lg:text-9xl"
+                text-transparent xs:text-7xl sm:text-7xl md:text-8xl lg:text-9xl"
               >
                 Glasses Finder
               </Title>

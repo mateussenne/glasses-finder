@@ -14,6 +14,7 @@ import { UseRequestGetOneWithGlasses } from "~/server/api/hooks/use-request-get-
 import { GlassesCarousel } from "../GlassesCarousel/GlassesCarousel";
 import { shapeDescription } from "~/utils/shape-description";
 import Link from "next/link";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface recomendedGlasesProps {
   requestId: string;
@@ -24,6 +25,7 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
     UseRequestGetOneWithGlasses(requestId);
   const faceShape = requestData?.faceShape?.shape;
   const shapeImgPath = `/images/${faceShape}.png`;
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const clearRequest = () => {
     localStorage.removeItem("requestId");
   };
@@ -39,7 +41,7 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
             className="bg-[#FCFFF7]"
             radius={"lg"}
             p={40}
-            w="80%"
+            w={isMobile ? "100%" : "80%"}
             withBorder
             shadow="xl"
           >
@@ -63,22 +65,22 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
             {faceShape && (
               <Paper className="bg-[#FCFFF7]" p={15}>
                 <Grid>
-                  <Grid.Col span={2}>
+                  <Grid.Col xs={12} sm={12} md={2} lg={2}>
                     <Image
                       src={shapeImgPath}
                       alt={faceShape}
-                      height={150}
-                      width={100}
+                      height={isMobile ? 300 : 150}
+                      width={isMobile ? 300 : 100}
                     />
                   </Grid.Col>
-                  <Grid.Col span={10}>
+                  <Grid.Col xs={12} sm={12} md={10} lg={10}>
                     {" "}
                     <Text style={{ color: "#141301" }}>
                       {shapeDescription(faceShape)}
                     </Text>
                     <Link href={"/"}>
                       <Button
-                        className="no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B]  hover:text-white"
+                        className="no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B]  hover:text-white xs:w-full sm:w-full md:w-28 lg:w-28"
                         variant="outline"
                         radius={"xl"}
                         color="pink"
