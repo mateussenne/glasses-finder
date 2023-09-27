@@ -1,5 +1,6 @@
 import { Grid, Button, Center, FileButton, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useMediaQuery } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { UseRequestCreate } from "~/server/api/hooks/use-request-create";
@@ -11,9 +12,16 @@ interface FileForm {
 }
 
 export const FileUploadSection = () => {
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const width = isMobile ? 450 : 800;
+  const height = isMobile ? 370 : 600;
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [base64Image, setBase64Image] = useState("");
+  const [webCamStatus, setWebCamStatus] = useState(false);
+  const [cameraPhoto, setCameraPhoto] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const photoRef = useRef<HTMLCanvasElement | null>(null);
   const {
     mutate: saveRequest,
     data: generatedRequest,
@@ -34,7 +42,7 @@ export const FileUploadSection = () => {
     if (webCamStatus) {
       navigator.mediaDevices
         .getUserMedia({
-          video: { width: 800, height: 600 },
+          video: { width, height },
         })
         .then((stream) => {
           const video = videoRef.current;
@@ -109,13 +117,6 @@ export const FileUploadSection = () => {
     };
   }, [form, base64Image]);
 
-  const width = 800;
-  const height = 600;
-  const [webCamStatus, setWebCamStatus] = useState(false);
-  const [cameraPhoto, setCameraPhoto] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const photoRef = useRef<HTMLCanvasElement | null>(null);
-
   useEffect(() => {
     getVideo();
   }),
@@ -157,8 +158,8 @@ export const FileUploadSection = () => {
           <>
             <Grid.Col span={12}>
               <Title
-                className="sm:text-7xl md:text-8xl lg:text-9xl bg-gradient-to-r from-[#70DBFF] to-[#AA1155]
-                bg-clip-text text-center font-extrabold text-transparent xs:text-8xl"
+                className="bg-gradient-to-r from-[#70DBFF] to-[#AA1155] bg-clip-text text-center font-extrabold
+                text-transparent xs:text-8xl sm:text-7xl md:text-8xl lg:text-9xl"
               >
                 Glasses Finder
               </Title>
@@ -171,7 +172,7 @@ export const FileUploadSection = () => {
                 >
                   {(props) => (
                     <Button
-                      className=" sm:w-full md:w-full lg:float-right lg:w-2/5 from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r hover:text-white xs:w-full"
+                      className=" from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r hover:text-white xs:w-full sm:w-full md:w-full lg:float-right lg:w-2/5"
                       variant="outline"
                       radius={"xl"}
                       color="pink"
@@ -186,7 +187,7 @@ export const FileUploadSection = () => {
             </Grid.Col>
             <Grid.Col lg={6} md={12} sm={12} xs={12}>
               <Button
-                className=" sm:w-full md:w-full lg:float-left lg:w-2/5 from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r hover:text-white xs:w-full"
+                className=" from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r hover:text-white xs:w-full sm:w-full md:w-full lg:float-left lg:w-2/5"
                 variant="outline"
                 radius={"xl"}
                 color="pink"
@@ -204,8 +205,8 @@ export const FileUploadSection = () => {
           <form onSubmit={form.onSubmit(() => saveRequest(transformedValues))}>
             <Center>
               <Button
-                className="sm:w-full md:w-full lg:w-1/5 bg-[#AA1155] no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B]
-                xs:w-full"
+                className="bg-[#AA1155] no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B] xs:w-full sm:w-full md:w-full
+                lg:w-1/5"
                 m={15}
                 variant="filled"
                 color="pink"
