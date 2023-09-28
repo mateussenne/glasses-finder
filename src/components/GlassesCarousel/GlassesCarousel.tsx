@@ -16,6 +16,7 @@ export const GlassesCarousel = ({ glasses }: CarouselProps) => {
       height={480}
       slideGap={isMobile ? "sm" : "md"}
       loop
+      draggable
       align={isMobile ? "start" : "center"}
     >
       {glasses.map((g) => {

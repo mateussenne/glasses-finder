@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { UseRequestCreate } from "~/server/api/hooks/use-request-create";
 import { convertToBase64 } from "~/utils/convert-to-base64";
+import { LoadingResults } from "../LoadingResults/LoadingResults";
 
 interface FileForm {
   file: File | null;
@@ -124,104 +125,112 @@ export const FileUploadSection = () => {
 
   return (
     <>
-      <Grid grow>
-        {webCamStatus ? (
-          <Grid.Col span={12}>
-            <canvas
-              className={!cameraPhoto ? "hidden" : ""}
-              width={width}
-              height={height}
-              ref={photoRef}
-            ></canvas>
-            <video
-              className={cameraPhoto ? "hidden" : ""}
-              ref={videoRef}
-            ></video>
-            {!file && (
-              <Center>
-                <Button
-                  className="bg-[#AA1155] text-white no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B]  hover:text-white"
-                  variant="outline"
-                  radius={"xl"}
-                  color="pink"
-                  size="xl"
-                  w={"100%"}
-                  mt={15}
-                  onClick={takePhoto}
-                >
-                  Take photo!
-                </Button>
-              </Center>
-            )}
-          </Grid.Col>
-        ) : (
-          <>
-            <Grid.Col span={12}>
-              <Title
-                className="bg-gradient-to-r from-[#70DBFF] to-[#AA1155] bg-clip-text text-center font-extrabold
-                text-transparent xs:text-7xl sm:text-7xl md:text-8xl lg:text-9xl"
-              >
-                Glasses Finder
-              </Title>
-            </Grid.Col>
-            <Grid.Col lg={6} md={12} sm={12} xs={12}>
-              <form>
-                <FileButton
-                  accept="image/png,image/jpeg"
-                  {...form.getInputProps("file")}
-                >
-                  {(props) => (
+      {!isLoading ? (
+        <>
+          <Grid grow>
+            {webCamStatus ? (
+              <Grid.Col span={12}>
+                <canvas
+                  className={!cameraPhoto ? "hidden" : ""}
+                  width={width}
+                  height={height}
+                  ref={photoRef}
+                ></canvas>
+                <video
+                  className={cameraPhoto ? "hidden" : ""}
+                  ref={videoRef}
+                ></video>
+                {!file && (
+                  <Center>
                     <Button
-                      className=" from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r hover:text-white xs:w-full sm:w-full md:w-full lg:float-right lg:w-2/5"
+                      className="bg-[#AA1155] text-white no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B]  hover:text-white"
                       variant="outline"
                       radius={"xl"}
                       color="pink"
-                      size="lg"
-                      {...props}
+                      size="xl"
+                      w={"100%"}
+                      mt={15}
+                      onClick={takePhoto}
                     >
-                      Upload image
+                      Take photo!
                     </Button>
-                  )}
-                </FileButton>
+                  </Center>
+                )}
+              </Grid.Col>
+            ) : (
+              <>
+                <Grid.Col span={12}>
+                  <Title
+                    className="bg-gradient-to-r from-[#70DBFF] to-[#AA1155] bg-clip-text text-center font-extrabold
+                text-transparent xs:text-7xl sm:text-7xl md:text-8xl lg:text-9xl"
+                  >
+                    Glasses Finder
+                  </Title>
+                </Grid.Col>
+                <Grid.Col lg={6} md={12} sm={12} xs={12}>
+                  <form>
+                    <FileButton
+                      accept="image/png,image/jpeg"
+                      {...form.getInputProps("file")}
+                    >
+                      {(props) => (
+                        <Button
+                          className=" from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r hover:text-white xs:w-full sm:w-full md:w-full lg:float-right lg:w-2/5"
+                          variant="outline"
+                          radius={"xl"}
+                          color="pink"
+                          size="lg"
+                          {...props}
+                        >
+                          {file ? file?.name : "Upload image "}
+                        </Button>
+                      )}
+                    </FileButton>
+                  </form>
+                </Grid.Col>
+                <Grid.Col lg={6} md={12} sm={12} xs={12}>
+                  <Button
+                    className=" from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r hover:text-white xs:w-full sm:w-full md:w-full lg:float-left lg:w-2/5"
+                    variant="outline"
+                    radius={"xl"}
+                    color="pink"
+                    size="lg"
+                    onClick={activateWebcam}
+                  >
+                    Use camera
+                  </Button>
+                </Grid.Col>
+              </>
+            )}
+          </Grid>
+          <Grid>
+            <Grid.Col span={12}>
+              <form
+                onSubmit={form.onSubmit(() => saveRequest(transformedValues))}
+              >
+                <Center>
+                  <Button
+                    className="bg-[#AA1155] no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B] xs:w-full sm:w-full md:w-full
+                lg:w-1/5"
+                    m={15}
+                    variant="filled"
+                    color="pink"
+                    type="submit"
+                    radius={"xl"}
+                    size={"lg"}
+                    loading={isLoading}
+                    disabled={file ? false : true}
+                  >
+                    Send!
+                  </Button>
+                </Center>
               </form>
             </Grid.Col>
-            <Grid.Col lg={6} md={12} sm={12} xs={12}>
-              <Button
-                className=" from-[#AA1155] to-[#E9207B] no-underline transition hover:bg-gradient-to-r hover:text-white xs:w-full sm:w-full md:w-full lg:float-left lg:w-2/5"
-                variant="outline"
-                radius={"xl"}
-                color="pink"
-                size="lg"
-                onClick={activateWebcam}
-              >
-                Use camera
-              </Button>
-            </Grid.Col>
-          </>
-        )}
-      </Grid>
-      <Grid>
-        <Grid.Col span={12}>
-          <form onSubmit={form.onSubmit(() => saveRequest(transformedValues))}>
-            <Center>
-              <Button
-                className="bg-[#AA1155] no-underline transition hover:bg-gradient-to-r hover:from-[#AA1155] hover:to-[#E9207B] xs:w-full sm:w-full md:w-full
-                lg:w-1/5"
-                m={15}
-                variant="filled"
-                color="pink"
-                type="submit"
-                radius={"xl"}
-                size={"lg"}
-                loading={isLoading}
-                disabled={file ? false : true}
-              >
-                Send!
-              </Button>
-            </Center>
-          </form>
-        </Grid.Col>
-      </Grid>
+          </Grid>
+        </>
+      ) : (
+        <LoadingResults />
+      )}
     </>
   );
 };
