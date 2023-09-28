@@ -78,7 +78,6 @@ export const FileUploadSection = () => {
         if (blob) {
           const file = new File([blob], "photosnap.jpg");
           setFile(file);
-          console.log(file);
         }
       });
     }

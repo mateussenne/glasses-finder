@@ -15,6 +15,7 @@ import { shapeDescription } from "~/utils/shape-description";
 import Link from "next/link";
 import { useMediaQuery } from "@mantine/hooks";
 import { LoadingResults } from "../LoadingResults/LoadingResults";
+import { useRouter } from "next/router";
 
 interface recomendedGlasesProps {
   requestId: string;
@@ -26,8 +27,10 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
   const faceShape = requestData?.faceShape?.shape;
   const shapeImgPath = `/images/${faceShape}.png`;
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const clearRequest = () => {
+  const router = useRouter();
+  const clearRequest = async () => {
     localStorage.removeItem("requestId");
+    await router.push({ pathname: "/" });
   };
   return (
     <Grid>
@@ -85,7 +88,7 @@ export const Recomendations = ({ requestId }: recomendedGlasesProps) => {
                           color="pink"
                           size="sm"
                           mt={5}
-                          onClick={clearRequest}
+                          onClick={() => void clearRequest()}
                         >
                           Try again
                         </Button>
