@@ -2,6 +2,7 @@ import { type NextApiRequest, type NextApiResponse } from "next";
 import formidable from "formidable";
 import type IncomingForm from "formidable/Formidable";
 import fs from "fs";
+import sharp from "sharp";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const form: IncomingForm = formidable({});
@@ -19,8 +20,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(500).end();
   }
 
-  const base64img = fs.readFileSync(file.filepath, "base64");
-  return res.send({ base64img });
+  const resizedPath = file.filepath + "_resized";
+  try {
+    await sharp(file.filepath).resize(300).toFile(resizedPath);
+    const base64img = fs.readFileSync(resizedPath, "base64");
+    return res.send({ base64img });
+  } catch {
+    (error: string) => {
+      return console.log(error);
+    };
+  }
 }
 
 export const config = {
