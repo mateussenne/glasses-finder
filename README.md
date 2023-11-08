@@ -1,9 +1,11 @@
 # README
 ** **WIP** ** This project is still under development.
 ## Take or upload your photo, receive the results!
-The goal is help people that can't decide which glasses to buy, creating an application that scans the face and gives a few options of glasses that might look good on the detected face shape. 
+The goal is to create an application to help people that can't decide which glasses to buy. The app scans the face and gives a few options of glasses stored on our database that might look good on the detected face shape. 
 
-The application will process your photo by converting the image to a base64 string before connecting to the [Faceshape API](https://github.com/Dudu197/faceshape-api). After analyzing the results of the API, we will display glasses stored on our database that matches the face format with purchase links.
+The application will process your photo by converting the image to a base64 string before connecting to the [Faceshape API](https://github.com/Dudu197/faceshape-api). After analyzing the results of the API, we will display glasses that matches the face format with purchase links.
+
+At the moment, all glasses content are mocked, so recomendations are not as relevant as might be in the future.
 
 There will be a roadmap with more features and bug corrections soon.
 
@@ -18,6 +20,7 @@ There will be a roadmap with more features and bug corrections soon.
 # Stack
 The project was built using the [T3](https://create.t3.gg/), which consists of:
 - Next.JS
+- React
 - tRPC
 - Prisma
 - Tailwind CSS
