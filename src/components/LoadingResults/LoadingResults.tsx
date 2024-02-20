@@ -6,7 +6,6 @@ export const LoadingResults = () => {
   const [phrase, setPhrase] = useState(
     customPhrases[Math.floor(Math.random() * customPhrases.length)]
   );
-  console.log(phrase);
   const changePhrase = () => {
     setPhrase(customPhrases[Math.floor(Math.random() * customPhrases.length)]);
   };

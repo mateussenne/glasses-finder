@@ -1,13 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { prisma } from "~/server/db";
-import { type Shape } from "@prisma/client";
 import { getFaceShape } from "~/utils/get-faceshape";
-
-type FaceShapeData = {
-  shape: Shape;
-  precision: number;
-};
 
 const input = z.object({
   base64Image: z.string(),
@@ -16,7 +10,6 @@ const input = z.object({
 export const requestRouter = createTRPCRouter({
   create: publicProcedure.input(input).mutation(async ({ input }) => {
     const faceShapeData = await getFaceShape(input.base64Image);
-    console.log(faceShapeData);
     if (!faceShapeData) {
       return;
     }
